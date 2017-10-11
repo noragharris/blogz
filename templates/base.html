@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Build-A-Blog!</title>
+        <style>
+            .error{
+                color: red;
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        <a href='/blog'>View all posts!</a>
+    </div>
+    <div>
+        <a href='/newpost'>Add a new post!</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% for category, messages in messages %}
+            <p class="{{category}}">{{ messages }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+<footer>
+
+</footer>
+</html>
