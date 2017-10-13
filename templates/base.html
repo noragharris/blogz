@@ -9,12 +9,12 @@
         </style>
     </head>
 <body>
-    <div>
+    <span>
         <a href='/blog'>View all posts!</a>
-    </div>
-    <div>
+    </span>
+    <span>
         <a href='/newpost'>Add a new post!</a>
-    </div>
+    </span>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% for category, messages in messages %}

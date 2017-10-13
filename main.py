@@ -1,21 +1,3 @@
-# COMPLETE set up flask - import things, set up app, debug, app run, def index
-# COMPLETE set up handlers and templates
-# COMPLETE set up database, user
-# COMPLETE set up SQLAlchemy
-# COMPLETE set up Models
-# COMPLETE submission separate from listings
-# COMPLETE separate add a new post and blog listing into two routes, handler classes, templates
-# COMPLETE user submits a new post, redirect them to the main blog page
-# COMPLETE blog class with id, title, body
-# COMPLETE /blog route displays blog posts
-# COMPLETE submit new post at the /newpost route, display on main page
-# COMPLETE two templates /blog and /newpost
-# COMPLETE have a base to extend on blog and newpost
-# COMPLETE in base template, have navigation links to the main blog page and new blog page
-# COMPLETE validation - title and body of blog can't be blank, render to add a new post form, with error message
-# TODO come back to Display Individual Entries later
-# TODO do a CSS template later
-
 from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 
@@ -37,8 +19,15 @@ class Blog_Post(db.Model):
 
 @app.route('/blog')
 def blog():
+
+    if request.args:
+        blog_id = request.args.get('id')
+        post = Blog_Post.query.get(blog_id)
+        return render_template('post.html', post=post)
+   
     blogs = Blog_Post.query.all()
     return render_template('blog.html', blogs=blogs)
+    
 
 @app.route('/newpost', methods = ['POST', 'GET'])
 def newpost():
@@ -56,6 +45,10 @@ def newpost():
             return redirect('/blog')
     
     return render_template('newpost.html')
+
+@app.route('/')
+def go_to_main():
+    return redirect('/blog')
 
 if __name__ == '__main__':
     app.run()
