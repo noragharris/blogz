@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Signup for Blogz!</h1>
+<p>If you already have an account, please visit the <a href='/login'>login page!</a></p>
+
+<form action='/signup' method='POST'>
+    <table>
+        <tr>
+            <td>
+                <label for='username'>Username:</label>
+            </td>
+            <td>
+                <input name='username' type='text' value='{{ username }}' />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for='password'>Password:</label>
+            </td>
+            <td>
+                <input name='password' type='password' value='{{ password }}'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for='verify'>Verify your password:</label>
+            </td>
+            <td>
+                <input name='verify' type='password' value='{{ verified_password }}' />
+            </td>
+        </tr>
+    </table>
+    <input type='submit' value='Signup!' />
+</form>
+
+{% endblock %}

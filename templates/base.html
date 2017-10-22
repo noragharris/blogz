@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Build-A-Blog!</title>
+        <title>Blogz</title>
         <style>
             .error{
                 color: red;
@@ -15,10 +15,19 @@
     <span>
         <a href='/newpost'>Add a new post!</a>
     </span>
+    <span>
+        <a href='/login'>Log in!</a>
+    </span>
+    <span>
+        <a href='/logout'>Log out!</a>
+    </span>
+    <span>
+        <a href='/'>Home</a>
+    </span>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% for category, messages in messages %}
-            <p class="{{category}}">{{ messages }}</p>
+            <p class="{{ category }}">{{ messages }}</p>
         {% endfor %}
     {% endwith %}
 
