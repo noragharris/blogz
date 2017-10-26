@@ -63,19 +63,25 @@ def logout():
     return redirect('/blog')
 
 @app.route('/')
-def index():
-    if request.args:
-        user_id = request.args.get('id')
+def index():    
+    if request.args.get('user'):
+        user_username = request.args.get('user')
+        user = User.query.filter_by(username = user_username).first()
+        user_id = user.id
         blogs = Blog_Post.query.filter_by(owner_id = user_id).all()
         return render_template('singleUser.html', blogs=blogs)
-
+    if request.args.get('blogid'):
+        blog_id = request.args.get('blogid')
+        post = Blog_Post.query.get(blog_id)
+        return render_template('post.html', post = post)
+    
     authors = User.query.all()
     return render_template('index.html', authors=authors)
 
 @app.route('/blog')
 def blog():
     if request.args:
-        blog_id = request.args.get('id')
+        blog_id = request.args.get('blogid')
         post = Blog_Post.query.get(blog_id)
         return render_template('post.html', post=post)
    
@@ -94,13 +100,14 @@ def newpost():
         if not title or not body:
             flash("Please enter a title and body for each post.", 'error')
             return redirect('/newpost')
-            #do i need these if it's nullable? how would I add flash message?
+            # TODO do i need these if it's nullable? how would I add flash message?
         else:
-            newpost = Blog_Post(title, body, owner)
+            newpost = Blog_Post(title, body, owner, pub_date=None)
             db.session.add(newpost)
             db.session.commit()
-            post = Blog_Post.query.order_by(Blog_Post.id.desc()).first()
+            post = Blog_Post.query.get(newpost.id)
             return render_template('post.html', post=post)
+            # TODO review if this is the best way to add a new post and display or if I should create a URL
     
     return render_template('newpost.html')
 

@@ -4,7 +4,8 @@
 <h1>Check out all your blog posts!</h1>
 
 {% for blog in blogs %}
-<a href="/blog?id={{ blog.id }}"><h2>{{ blog.title }}</h2></a>
+<a href="/blog?blogid={{ blog.id }}"><h2>{{ blog.title }}</h2></a>
+<p>{{ blog.pub_date }}</p>
 <p>{{ blog.body }}</p>
 <hr />       
 {% endfor %}
