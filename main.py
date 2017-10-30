@@ -1,4 +1,9 @@
+# TODO: Add pagination - optional
+# TODO: Add hashing - optional
+# TODO: Add CSS formatting - optional?
+
 from flask import request, redirect, render_template, flash, session
+from sqlalchemy import desc
 import cgi
 
 from app import app, db
@@ -63,29 +68,41 @@ def logout():
     return redirect('/blog')
 
 @app.route('/')
-def index():    
+def index():    # Main page displaying all authors
     if request.args.get('user'):
         user_username = request.args.get('user')
         user = User.query.filter_by(username = user_username).first()
         user_id = user.id
-        blogs = Blog_Post.query.filter_by(owner_id = user_id).all()
-        return render_template('singleUser.html', blogs=blogs)
+        username = user.username
+        blogs = Blog_Post.query.filter_by(owner_id = user_id).order_by(desc(Blog_Post.pub_date)).all()
+        return render_template('singleUser.html', blogs=blogs, username = username)
     if request.args.get('blogid'):
         blog_id = request.args.get('blogid')
         post = Blog_Post.query.get(blog_id)
-        return render_template('post.html', post = post)
+        user = User.query.get(post.owner_id)
+        username = user.username
+        return render_template('post.html', post = post, username = username)
     
     authors = User.query.all()
     return render_template('index.html', authors=authors)
 
 @app.route('/blog')
 def blog():
-    if request.args:
+    if request.args.get('blogid'):
         blog_id = request.args.get('blogid')
         post = Blog_Post.query.get(blog_id)
-        return render_template('post.html', post=post)
+        user = User.query.get(post.owner_id)
+        username = user.username
+        return render_template('post.html', post=post, username=username)
+    if request.args.get('user'):
+        user_username = request.args.get('user')
+        user = User.query.filter_by(username = user_username).first()
+        user_id = user.id
+        username = user.username
+        blogs = Blog_Post.query.filter_by(owner_id = user_id).order_by(desc(Blog_Post.pub_date)).all()
+        return render_template('singleUser.html', blogs=blogs, username = username)
    
-    blogs = Blog_Post.query.all()
+    blogs = Blog_Post.query.order_by(desc(Blog_Post.pub_date)).all()
     return render_template('blog.html', blogs=blogs)
     
 
@@ -106,7 +123,9 @@ def newpost():
             db.session.add(newpost)
             db.session.commit()
             post = Blog_Post.query.get(newpost.id)
-            return render_template('post.html', post=post)
+            user = User.query.get(post.owner_id)
+            username = user.username
+            return render_template('post.html', post=post, username=username)
             # TODO review if this is the best way to add a new post and display or if I should create a URL
     
     return render_template('newpost.html')

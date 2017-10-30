@@ -3,8 +3,9 @@
 {% block content %}
 
 <h1>{{ post.title }}</h1>
-<p>{{ post.pub_date }}</p>
 <p>{{ post.body }}</p>
+<p>written by <a href="/blog?user={{ username }}">{{ username }}</a></p>
+<p>{{ post.pub_date }}</p>
 
 {% endblock %}
 

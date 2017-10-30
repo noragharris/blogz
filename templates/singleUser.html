@@ -5,8 +5,9 @@
 
 {% for blog in blogs %}
 <a href="/?blogid={{ blog.id }}"><h2>{{ blog.title }}</h2></a>
-<p>{{ blog.pub_date }}</p>
 <p>{{ blog.body }}</p>
+<p>written by <a href="/blog?user={{ username }}">{{ username }}</a></p>
+<p>{{ blog.pub_date }}</p>
 <hr />       
 {% endfor %}
 

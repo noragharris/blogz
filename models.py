@@ -26,4 +26,5 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+
     # TODO insert dunder repr here
